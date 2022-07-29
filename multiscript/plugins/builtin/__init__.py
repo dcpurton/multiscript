@@ -6,6 +6,7 @@ from multiscript.sources.getbible_dot_net import GetBibleDotNetSource
 
 from multiscript.outputs.word import WordOutput
 from multiscript.outputs.plain_text import PlainTextOutput
+from multiscript.outputs.latex import LaTeXOutput
 
 class BuiltinPlugin(Plugin):
     '''Built-in plugin for built-in sources and outputs.
@@ -15,13 +16,13 @@ class BuiltinPlugin(Plugin):
     def __init__(self):
         super().__init__()
         self.id = BUILTIN_PLUGIN_ID
-   
+
     def get_sources(self):
         '''Returns a list of BibleSources that the plugin provides.
         '''
-        return [GetBibleDotNetSource(self)]               
-    
+        return [GetBibleDotNetSource(self)]
+
     def get_outputs(self):
         '''Returns a list of BibleOutputs that the plugin provides.
         '''
-        return [WordOutput(self), PlainTextOutput(self)]               
+        return [WordOutput(self), PlainTextOutput(self), LaTeXOutput(self)]

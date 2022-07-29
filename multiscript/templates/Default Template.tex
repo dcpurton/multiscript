@@ -1,0 +1,45 @@
+% TeX Program = lualatex
+
+\documentclass{article}
+
+% Page set up
+\usepackage[a4paper, margin=3cm]{geometry}
+
+% Language and font set up
+\usepackage{microtype}
+\usepackage{fontspec}
+\usepackage{babel}
+\babelprovide[import, main, onchar=ids fonts]{australian}
+\defaultfontfeatures{Renderer=Harfbuzz}
+\babelfont{rm}{Noto Serif}
+
+% Convenience macros to simplify switching between versions
+\usepackage{scripture}
+\scripturesetup{
+  aboveskip=\medskipamount,
+  belowskip=\medskipamount,
+  font={\small\emergencystretch=1em},
+  noindent,
+  parindent=1em
+}
+\usepackage{paracol}
+
+\AddToHook{cmd/pcol@com@switchcolumn/before}{\selectlanguage{australian}}
+\AddToHook{enddocument}{\end{paracol}}
+\NewDocumentCommand{\startpassage}{m}{
+  \ifcsname switchcolumn\endcsname
+    \switchcolumn[0]*[\section*{#1}]
+  \else
+    \begin{paracol}{[MSC_VERS_COUNT]}[\section*{#1}]
+  \fi
+}
+\NewDocumentCommand{\startcopyright}{}{
+  \switchcolumn[0]*[\bigskip]\par
+  \scriptsize\itshape\parindent 0em
+}
+\NewDocumentCommand{\nextversion}{}{\switchcolumn}
+
+% Start main document
+\begin{document}
+[MSC_ALL_TABLES]
+\end{document}

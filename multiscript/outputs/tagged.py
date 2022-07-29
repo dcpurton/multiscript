@@ -9,6 +9,7 @@ from multiscript.plan.symbols import column_symbols
 
 
 class Tags(Enum):
+    VERS_COUNT              =   "[MSC_VERS_COUNT]"              # Expands to the number of versions
     ALL_VERS_USER_LANG      =   "[MSC_ALL_VERS_USER_LANG]"      # Expands to a list of all the versions'
                                                                 #   languages (user labels)
     UNIQUE_VERS_USER_LANG   =   "[MSC_UNIQUE_VERS_USER_LANG]"   # Expands to a list of versions languages (user labels)
@@ -111,6 +112,11 @@ class TaggedOutput(FileSetOutput):
         '''
         if not is_template:
             # These tags can't be completed if we're building a template, as we won't know all the versions
+            tag = Tags.VERS_COUNT.value
+            version_count = len(version_combo)
+            replace_text = str(version_count)
+            self.replace_tag_directly(document, tag, replace_text)
+
             tag = Tags.ALL_VERS_USER_LANG.value
             versions = [element.version for element in version_combo if element.version is not None]
             replace_text = ", ".join([version.user_labels.lang for version in versions])
